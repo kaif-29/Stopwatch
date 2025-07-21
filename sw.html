@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stopwatch</title>
+</head>
+<body>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: aliceblue;
+    }
+    #Myh1 {
+      font-size: 4rem;
+      font-family: Arial, Helvetica, sans-serif;
+      color: grey;
+    }
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 5px solid;
+      border-radius: 10px;
+      padding: 5%;
+      background-image: url("https://imgs.search.brave.com/LAVgqCem4bi4eVMl_-A3DXOowv9uFJNvQV8Wh6dNoPo/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTA4/MjczNjAyL3Bob3Rv/L2Nsb2NrLWFuZC10/aW1lLWJhY2tncm91/bmQuanBnP2I9MSZz/PTYxMng2MTImdz0w/Jms9MjAmYz0wQUEy/YVhkeXUxWm9ha2N4/d2xoVkpQMkdvNW5E/LVlyV3NRaEZiTklp/QmM4PQ");
+      color: white;
+    }
+    #display {
+      font-size: 3rem;
+      color: rgb(41, 89, 132);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: monospace;
+      text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+    #mybutton button {
+      font-size: 1.5rem;
+      margin: 10px;
+      font-weight: bold;
+      color: black;
+      padding: 10px 20px;
+      min-width: 125px;
+      border: none;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    #srtbtn {
+      background-color: rgba(0, 255, 170, 0.666);
+    }
+    #stobtn {
+      background-color: rgba(255, 0, 0, 0.59);
+    }
+    #resbtn {
+      background-color: rgba(229, 255, 0, 0.718);
+    }
+    #srtbtn:hover {
+      background-color: rgba(191, 232, 218, 0.666);
+    }
+    #stobtn:hover {
+      background-color: rgba(255, 183, 183, 0.59);
+    }
+    #resbtn:hover {
+      background-color: rgba(195, 188, 188, 0.718);
+    }
+  </style>
+
+  <h1 id="Myh1">Stopwatch</h1>
+  <div id="container">
+    <div id="display">00:00:00:00</div>
+    <div id="mybutton">
+      <button id="srtbtn" onclick="start()">Start</button>
+      <button id="stobtn" onclick="stop()">Stop</button>
+      <button id="resbtn" onclick="reset()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    let timer = null;
+    let startTime = 0;
+    let elapsedTime = 0;
+    let isRunning = false;
+
+    function start() {
+      if (!isRunning) {
+        startTime = Date.now() - elapsedTime;
+        timer = setInterval(update, 10);
+        isRunning = true;
+      }
+    }
+
+    function stop() {
+      if (isRunning) {
+        clearInterval(timer);
+        elapsedTime = Date.now() - startTime;
+        isRunning = false;
+      }
+    }
+
+    function reset() {
+      clearInterval(timer);
+      startTime = 0;
+      elapsedTime = 0;
+      isRunning = false;
+      display.textContent = "00:00:00:00";
+    }
+
+    function update() {
+      const currentTime = Date.now();
+      elapsedTime = currentTime - startTime;
+
+      let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+      let minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+      let seconds = Math.floor((elapsedTime / 1000) % 60);
+      let milliseconds = Math.floor((elapsedTime % 1000) / 10);
+
+      hours = String(hours).padStart(2, "0");
+      minutes = String(minutes).padStart(2, "0");
+      seconds = String(seconds).padStart(2, "0");
+      milliseconds = String(milliseconds).padStart(2, "0");
+
+      display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
+    }
+  </script>
+</body>
+</html>
